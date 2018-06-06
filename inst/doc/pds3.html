@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Micah J Waldstein (micah@waldste.in)" />
+
+<meta name="date" content="2018-06-04" />
+
+<title>Getting Started With PDS3</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Getting Started With PDS3</h1>
+<h4 class="author"><em>Micah J Waldstein (<a href="mailto:micah@waldste.in">micah@waldste.in</a>)</em></h4>
+<h4 class="date"><em>2018-06-04</em></h4>
+
+
+
+<p>PDS3 is a data standard used extensively by NASA for archiving data from science missions, maintained by JPL. While being replaced by PDS4, PDS4 covers all currently active missions and those covering the history of US space exploration.</p>
+<p>The R pds3 package provides tools for parsing PDS3 data, particularly the ODL label format which describes all the metadata of data collection. Want to plot a heatmap of Mars of all the images taken? This is the package for you!</p>
+<div id="getting-started" class="section level2">
+<h2>Getting Started</h2>
+<p>The package is not yet on CRAN, so to install you’ll want to use <code>devtools</code> to get the development version from Github.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Install devtools if you don't already have it</span>
+<span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)
+<span class="co"># Install the development version of pds3</span>
+devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;mwaldstein/pds3&quot;</span>)</code></pre></div>
+<div id="finding-data" class="section level3">
+<h3>Finding Data</h3>
+<p>If you’re exploring this package, chances are you already have a collection of PDS files, but if you’re interested in exploring NASA data, the place to get started is <a href="https://pds.jpl.nasa.gov/datasearch/data-search/">The Planetary Data System</a>.</p>
+<p>Once you find a mission you’re interested in exploring, finding the data explorer is typically straight forward. The metadata this package processes is typically stored in .lbl files. For instance, we’ll look at the labels from the Mars Reconnaissance Orbiter’s HiRise experiment, particularly the data associated with <a href="http://ode.rsl.wustl.edu/mars/indexproductpage.aspx?product_idgeo=13465046">this image</a>.</p>
+</div>
+</div>
+<div id="reading-parsing-data" class="section level2">
+<h2>Reading &amp; Parsing Data</h2>
+<p>We’ll start by grabbing the label (LBL) file.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">href &lt;-<span class="st"> 'http://hirise.lpl.arizona.edu/PDS/RDR/ESP/ORB_011700_011799/ESP_011707_1440/ESP_011707_1440_COLOR.LBL'</span>
+req &lt;-<span class="st"> </span>curl<span class="op">::</span><span class="kw">curl_fetch_memory</span>(href)
+dat &lt;-<span class="st"> </span><span class="kw">rawToChar</span>(req<span class="op">$</span>content)</code></pre></div>
+<p>Now we have the data, we’ll process it using <code>parse_pds3</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(pds3)
+res &lt;-<span class="st"> </span><span class="kw">pds3_read</span>(dat)
+<span class="kw">str</span>(res<span class="op">$</span>odl)
+<span class="co">#&gt; List of 26</span>
+<span class="co">#&gt;  $ PDS_VERSION_ID               : chr &quot;PDS3&quot;</span>
+<span class="co">#&gt;  $ NOT_APPLICABLE_CONSTANT      : int -9998</span>
+<span class="co">#&gt;  $ DATA_SET_ID                  : chr &quot;MRO-M-HIRISE-3-RDR-V1.1&quot;</span>
+<span class="co">#&gt;  $ DATA_SET_NAME                : chr &quot;MRO MARS HIGH RESOLUTION IMAGING SCIENCE\r\n                            EXPERIMENT RDR V1.1&quot;</span>
+<span class="co">#&gt;  $ PRODUCER_INSTITUTION_NAME    : chr &quot;UNIVERSITY OF ARIZONA&quot;</span>
+<span class="co">#&gt;  $ PRODUCER_ID                  : chr &quot;UA&quot;</span>
+<span class="co">#&gt;  $ PRODUCER_FULL_NAME           : chr &quot;ALFRED MCEWEN&quot;</span>
+<span class="co">#&gt;  $ OBSERVATION_ID               : chr &quot;ESP_011707_1440&quot;</span>
+<span class="co">#&gt;  $ PRODUCT_ID                   : chr &quot;ESP_011707_1440_COLOR&quot;</span>
+<span class="co">#&gt;  $ PRODUCT_VERSION_ID           : chr &quot;2.0&quot;</span>
+<span class="co">#&gt;  $ INSTRUMENT_HOST_NAME         : chr &quot;MARS RECONNAISSANCE ORBITER&quot;</span>
+<span class="co">#&gt;  $ INSTRUMENT_HOST_ID           : chr &quot;MRO&quot;</span>
+<span class="co">#&gt;  $ INSTRUMENT_NAME              : chr &quot;HIGH RESOLUTION IMAGING SCIENCE EXPERIMENT&quot;</span>
+<span class="co">#&gt;  $ INSTRUMENT_ID                : chr &quot;HIRISE&quot;</span>
+<span class="co">#&gt;  $ TARGET_NAME                  : chr &quot;MARS&quot;</span>
+<span class="co">#&gt;  $ MISSION_PHASE_NAME           : chr &quot;EXTENDED SCIENCE PHASE&quot;</span>
+<span class="co">#&gt;  $ ORBIT_NUMBER                 : int 11707</span>
+<span class="co">#&gt;  $ SOURCE_PRODUCT_ID            : chr [1:12] &quot;ESP_011707_1440_BG12_0&quot; &quot;ESP_011707_1440_BG12_1&quot; &quot;ESP_011707_1440_RED4_0&quot; &quot;ESP_011707_1440_RED4_1&quot; ...</span>
+<span class="co">#&gt;  $ RATIONALE_DESC               : chr &quot;Channels on crater rim&quot;</span>
+<span class="co">#&gt;  $ SOFTWARE_NAME                : chr &quot;PDS_to_JP2 v3.15.5 (1.49 2008/07/12 04:09:51)&quot;</span>
+<span class="co">#&gt;  $ IMAGE_MAP_PROJECTION         :List of 24</span>
+<span class="co">#&gt;   ..$ ^DATA_SET_MAP_PROJECTION    :List of 2</span>
+<span class="co">#&gt;   .. ..$ value : chr &quot;DSMAP.CAT&quot;</span>
+<span class="co">#&gt;   .. ..$ offset: num -1</span>
+<span class="co">#&gt;   ..$ MAP_PROJECTION_TYPE         : chr &quot;EQUIRECTANGULAR&quot;</span>
+<span class="co">#&gt;   ..$ PROJECTION_LATITUDE_TYPE    : chr &quot;PLANETOCENTRIC&quot;</span>
+<span class="co">#&gt;   ..$ A_AXIS_RADIUS               :List of 2</span>
+<span class="co">#&gt;   .. ..$ value: num 3390</span>
+<span class="co">#&gt;   .. ..$ unit : chr &quot;KM&quot;</span>
+<span class="co">#&gt;   ..$ B_AXIS_RADIUS               :List of 2</span>
+<span class="co">#&gt;   .. ..$ value: num 3390</span>
+<span class="co">#&gt;   .. ..$ unit : chr &quot;KM&quot;</span>
+<span class="co">#&gt;   ..$ C_AXIS_RADIUS               :List of 2</span>
+<span class="co">#&gt;   .. ..$ value: num 3390</span>
+<span class="co">#&gt;   .. ..$ unit : chr &quot;KM&quot;</span>
+<span class="co">#&gt;   ..$ COORDINATE_SYSTEM_NAME      : chr &quot;PLANETOCENTRIC&quot;</span>
+<span class="co">#&gt;   ..$ POSITIVE_LONGITUDE_DIRECTION: chr &quot;EAST&quot;</span>
+<span class="co">#&gt;   ..$ KEYWORD_LATITUDE_TYPE       : chr &quot;PLANETOCENTRIC&quot;</span>
+<span class="co">#&gt;   ..$ CENTER_LATITUDE             :List of 2</span>
+<span class="co">#&gt;   .. ..$ value: num -35</span>
+<span class="co">#&gt;   .. ..$ unit : chr &quot;DEG&quot;</span>
+<span class="co">#&gt;   ..$ CENTER_LONGITUDE            :List of 2</span>
+<span class="co">#&gt;   .. ..$ value: num 180</span>
+<span class="co">#&gt;   .. ..$ unit : chr &quot;DEG&quot;</span>
+<span class="co">#&gt;   ..$ LINE_FIRST_PIXEL            : int 1</span>
+<span class="co">#&gt;   ..$ LINE_LAST_PIXEL             : int 55636</span>
+<span class="co">#&gt;   ..$ SAMPLE_FIRST_PIXEL          : int 1</span>
+<span class="co">#&gt;   ..$ SAMPLE_LAST_PIXEL           : int 10633</span>
+<span class="co">#&gt;   ..$ MAP_PROJECTION_ROTATION     :List of 2</span>
+<span class="co">#&gt;   .. ..$ value: num 0</span>
+<span class="co">#&gt;   .. ..$ unit : chr &quot;DEG&quot;</span>
+<span class="co">#&gt;   ..$ MAP_RESOLUTION              :List of 2</span>
+<span class="co">#&gt;   .. ..$ value: num 236637</span>
+<span class="co">#&gt;   .. ..$ unit : chr &quot;PIX/DEG&quot;</span>
+<span class="co">#&gt;   ..$ MAP_SCALE                   :List of 2</span>
+<span class="co">#&gt;   .. ..$ value: num 0.25</span>
+<span class="co">#&gt;   .. ..$ unit : chr &quot;METERS/PIXEL&quot;</span>
+<span class="co">#&gt;   ..$ MAXIMUM_LATITUDE            :List of 2</span>
+<span class="co">#&gt;   .. ..$ value: num -35.4</span>
+<span class="co">#&gt;   .. ..$ unit : chr &quot;DEG&quot;</span>
+<span class="co">#&gt;   ..$ MINIMUM_LATITUDE            :List of 2</span>
+<span class="co">#&gt;   .. ..$ value: num -35.6</span>
+<span class="co">#&gt;   .. ..$ unit : chr &quot;DEG&quot;</span>
+<span class="co">#&gt;   ..$ LINE_PROJECTION_OFFSET      :List of 2</span>
+<span class="co">#&gt;   .. ..$ value: num -8377212</span>
+<span class="co">#&gt;   .. ..$ unit : chr &quot;PIXEL&quot;</span>
+<span class="co">#&gt;   ..$ SAMPLE_PROJECTION_OFFSET    :List of 2</span>
+<span class="co">#&gt;   .. ..$ value: num 7151126</span>
+<span class="co">#&gt;   .. ..$ unit : chr &quot;PIXEL&quot;</span>
+<span class="co">#&gt;   ..$ EASTERNMOST_LONGITUDE       :List of 2</span>
+<span class="co">#&gt;   .. ..$ value: num 143</span>
+<span class="co">#&gt;   .. ..$ unit : chr &quot;DEG&quot;</span>
+<span class="co">#&gt;   ..$ WESTERNMOST_LONGITUDE       :List of 2</span>
+<span class="co">#&gt;   .. ..$ value: num 143</span>
+<span class="co">#&gt;   .. ..$ unit : chr &quot;DEG&quot;</span>
+<span class="co">#&gt;  $ TIME_PARAMETERS              :List of 6</span>
+<span class="co">#&gt;   ..$ MRO:OBSERVATION_START_TIME  : POSIXlt[1:1], format: &quot;2009-01-24 17:07:14&quot;</span>
+<span class="co">#&gt;   ..$ START_TIME                  : POSIXlt[1:1], format: &quot;2009-01-24 17:07:14&quot;</span>
+<span class="co">#&gt;   ..$ SPACECRAFT_CLOCK_START_COUNT: chr &quot;917284056:11103&quot;</span>
+<span class="co">#&gt;   ..$ STOP_TIME                   : POSIXlt[1:1], format: &quot;2009-01-24 17:07:19&quot;</span>
+<span class="co">#&gt;   ..$ SPACECRAFT_CLOCK_STOP_COUNT : chr &quot;917284060:44707&quot;</span>
+<span class="co">#&gt;   ..$ PRODUCT_CREATION_TIME       : POSIXlt[1:1], format: &quot;2009-09-12 04:31:46&quot;</span>
+<span class="co">#&gt;  $ INSTRUMENT_SETTING_PARAMETERS:List of 4</span>
+<span class="co">#&gt;   ..$ MRO:CCD_FLAG               : chr [1:14] &quot;ON&quot; &quot;ON&quot; &quot;ON&quot; &quot;ON&quot; ...</span>
+<span class="co">#&gt;   ..$ MRO:BINNING                : int [1:14] -9998 -9998 -9998 -9998 1 1 -9998 -9998 -9998 -9998 ...</span>
+<span class="co">#&gt;   ..$ MRO:TDI                    : int [1:14] -9998 -9998 -9998 -9998 128 128 -9998 -9998 -9998 -9998 ...</span>
+<span class="co">#&gt;   ..$ MRO:SPECIAL_PROCESSING_FLAG: chr [1:14] &quot;NULL&quot; &quot;NULL&quot; &quot;NULL&quot; &quot;NULL&quot; ...</span>
+<span class="co">#&gt;  $ VIEWING_PARAMETERS           :List of 7</span>
+<span class="co">#&gt;   ..$ INCIDENCE_ANGLE  :List of 2</span>
+<span class="co">#&gt;   .. ..$ value: num 60.9</span>
+<span class="co">#&gt;   .. ..$ unit : chr &quot;DEG&quot;</span>
+<span class="co">#&gt;   ..$ EMISSION_ANGLE   :List of 2</span>
+<span class="co">#&gt;   .. ..$ value: num 0.27</span>
+<span class="co">#&gt;   .. ..$ unit : chr &quot;DEG&quot;</span>
+<span class="co">#&gt;   ..$ PHASE_ANGLE      :List of 2</span>
+<span class="co">#&gt;   .. ..$ value: num 61</span>
+<span class="co">#&gt;   .. ..$ unit : chr &quot;DEG&quot;</span>
+<span class="co">#&gt;   ..$ LOCAL_TIME       :List of 2</span>
+<span class="co">#&gt;   .. ..$ value: num 16</span>
+<span class="co">#&gt;   .. ..$ unit : chr &quot;LOCALDAY/24&quot;</span>
+<span class="co">#&gt;   ..$ SOLAR_LONGITUDE  :List of 2</span>
+<span class="co">#&gt;   .. ..$ value: num 197</span>
+<span class="co">#&gt;   .. ..$ unit : chr &quot;DEG&quot;</span>
+<span class="co">#&gt;   ..$ SUB_SOLAR_AZIMUTH:List of 2</span>
+<span class="co">#&gt;   .. ..$ value: num 193</span>
+<span class="co">#&gt;   .. ..$ unit : chr &quot;DEG&quot;</span>
+<span class="co">#&gt;   ..$ NORTH_AZIMUTH    :List of 2</span>
+<span class="co">#&gt;   .. ..$ value: num 270</span>
+<span class="co">#&gt;   .. ..$ unit : chr &quot;DEG&quot;</span>
+<span class="co">#&gt;  $ COMPRESSED_FILE              :List of 8</span>
+<span class="co">#&gt;   ..$ FILE_NAME                 : chr &quot;ESP_011707_1440_COLOR.JP2&quot;</span>
+<span class="co">#&gt;   ..$ RECORD_TYPE               : chr &quot;UNDEFINED&quot;</span>
+<span class="co">#&gt;   ..$ ENCODING_TYPE             : chr &quot;JP2&quot;</span>
+<span class="co">#&gt;   ..$ ENCODING_TYPE_VERSION_NAME: chr &quot;ISO/IEC15444-1:2004&quot;</span>
+<span class="co">#&gt;   ..$ INTERCHANGE_FORMAT        : chr &quot;BINARY&quot;</span>
+<span class="co">#&gt;   ..$ UNCOMPRESSED_FILE_NAME    : chr &quot;ESP_011707_1440_COLOR.IMG&quot;</span>
+<span class="co">#&gt;   ..$ REQUIRED_STORAGE_BYTES    :List of 2</span>
+<span class="co">#&gt;   .. ..$ value: int NA</span>
+<span class="co">#&gt;   .. ..$ unit : chr &quot;BYTES&quot;</span>
+<span class="co">#&gt;   ..$ ^DESCRIPTION              :List of 2</span>
+<span class="co">#&gt;   .. ..$ value : chr &quot;JP2INFO.TXT&quot;</span>
+<span class="co">#&gt;   .. ..$ offset: num -1</span>
+<span class="co">#&gt;  $ UNCOMPRESSED_FILE            :List of 6</span>
+<span class="co">#&gt;   ..$ FILE_NAME   : chr &quot;ESP_011707_1440_COLOR.IMG&quot;</span>
+<span class="co">#&gt;   ..$ RECORD_TYPE : chr &quot;FIXED_LENGTH&quot;</span>
+<span class="co">#&gt;   ..$ RECORD_BYTES:List of 2</span>
+<span class="co">#&gt;   .. ..$ value: int 21266</span>
+<span class="co">#&gt;   .. ..$ unit : chr &quot;BYTES&quot;</span>
+<span class="co">#&gt;   ..$ FILE_RECORDS: int 166908</span>
+<span class="co">#&gt;   ..$ ^IMAGE      :List of 2</span>
+<span class="co">#&gt;   .. ..$ value : chr &quot;ESP_011707_1440_COLOR.IMG&quot;</span>
+<span class="co">#&gt;   .. ..$ offset: num -1</span>
+<span class="co">#&gt;   ..$ IMAGE       :List of 19</span>
+<span class="co">#&gt;   .. ..$ DESCRIPTION               : chr &quot;HiRISE projected and mosaicked product&quot;</span>
+<span class="co">#&gt;   .. ..$ LINES                     : int 55636</span>
+<span class="co">#&gt;   .. ..$ LINE_SAMPLES              : int 10633</span>
+<span class="co">#&gt;   .. ..$ BANDS                     : int 3</span>
+<span class="co">#&gt;   .. ..$ SAMPLE_TYPE               : chr &quot;MSB_UNSIGNED_INTEGER&quot;</span>
+<span class="co">#&gt;   .. ..$ SAMPLE_BITS               : int 16</span>
+<span class="co">#&gt;   .. ..$ SAMPLE_BIT_MASK           : int 1023</span>
+<span class="co">#&gt;   .. ..$ SCALING_FACTOR            : num 0.000136</span>
+<span class="co">#&gt;   .. ..$ OFFSET                    : num 0.0332</span>
+<span class="co">#&gt;   .. ..$ BAND_STORAGE_TYPE         : chr &quot;BAND_SEQUENTIAL&quot;</span>
+<span class="co">#&gt;   .. ..$ CORE_NULL                 : int 0</span>
+<span class="co">#&gt;   .. ..$ CORE_LOW_REPR_SATURATION  : int 1</span>
+<span class="co">#&gt;   .. ..$ CORE_LOW_INSTR_SATURATION : int 2</span>
+<span class="co">#&gt;   .. ..$ CORE_HIGH_REPR_SATURATION : int 1023</span>
+<span class="co">#&gt;   .. ..$ CORE_HIGH_INSTR_SATURATION: int 1022</span>
+<span class="co">#&gt;   .. ..$ CENTER_FILTER_WAVELENGTH  :List of 3</span>
+<span class="co">#&gt;   .. .. ..$ :List of 2</span>
+<span class="co">#&gt;   .. .. .. ..$ value: int 900</span>
+<span class="co">#&gt;   .. .. .. ..$ unit : chr &quot;NM&quot;</span>
+<span class="co">#&gt;   .. .. ..$ :List of 2</span>
+<span class="co">#&gt;   .. .. .. ..$ value: int 700</span>
+<span class="co">#&gt;   .. .. .. ..$ unit : chr &quot;NM&quot;</span>
+<span class="co">#&gt;   .. .. ..$ :List of 2</span>
+<span class="co">#&gt;   .. .. .. ..$ value: int 500</span>
+<span class="co">#&gt;   .. .. .. ..$ unit : chr &quot;NM&quot;</span>
+<span class="co">#&gt;   .. ..$ MRO:MINIMUM_STRETCH       : int [1:3] 3 3 3</span>
+<span class="co">#&gt;   .. ..$ MRO:MAXIMUM_STRETCH       : int [1:3] 1021 1021 1021</span>
+<span class="co">#&gt;   .. ..$ FILTER_NAME               : chr [1:3] &quot;NEAR-INFRARED&quot; &quot;RED&quot; &quot;BLUE-GREEN&quot;</span></code></pre></div>
+</div>
+<div id="cautionary-notes" class="section level2">
+<h2>Cautionary Notes</h2>
+<p>All of the data you can access from NASA missions is public, but be aware that if you are going to download a large amount, there are almost always better ways than web scraping - be it either a catalog-only download or via FTP, investigate and be sure to be considerate.</p>
+<p>Also of note that the data is public and free to use, it is the product of a lot of hard work and it is appropriate to cite the data source and the principle investigators of the instrument whose data you are using. NASA provides a guide to <a href="https://pds.nasa.gov/datastandards/pds3/citing-pds3-data.shtml">Citing PDS3 Data</a></p>
+<p>One cool thing is that many PDS catalogs include citation information in a PDS3 formatted file we can use this package to extract!</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cit_href &lt;-<span class="st"> &quot;https://hirise.lpl.arizona.edu/PDS/CATALOG/RDR_DS.CAT&quot;</span>
+cit_req &lt;-<span class="st"> </span>curl<span class="op">::</span><span class="kw">curl_fetch_memory</span>(cit_href)
+cit_dat &lt;-<span class="st"> </span><span class="kw">rawToChar</span>(cit_req<span class="op">$</span>content)
+cit_res &lt;-<span class="st"> </span><span class="kw">pds3_read</span>(cit_dat)
+
+cit_res<span class="op">$</span>odl<span class="op">$</span>DATA_SET<span class="op">$</span>DATA_SET_INFORMATION<span class="op">$</span>CITATION_DESC
+<span class="co">#&gt; [1] &quot;McEwen, A., Mars Reconnaissance \r\n      Orbiter High Resolution Imaging Science Experiment, Reduced \r\n      Data Record, MRO-M-HIRISE-3-RDR-V1.0, NASA Planetary Data\r\n      System, 2007.&quot;</span></code></pre></div>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<ul>
+<li>The MRO-M-HIRISE-3-RDR-V1.0 data set was obtained from the <a href="https://pds.nasa.gov">Planetary Data System (PDS)</a>.</li>
+<li>McEwen, A., Mars Reconnaissance Orbiter High Resolution Imaging Science Experiment, Reduced Data Record, MRO-M-HIRISE-3-RDR-V1.0, NASA Planetary Data System, 2007.</li>
+</ul>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
